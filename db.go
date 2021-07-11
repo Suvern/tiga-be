@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"tiga/model"
 )
 
 var Db *gorm.DB
@@ -14,6 +15,10 @@ func init() {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		print("数据库连接失败")
+		panic(err)
+	}
+	if err := db.AutoMigrate(&model.Article{}, &model.Tag{}, &model.Category{}); err != nil {
+		print("自动建表失败")
 		panic(err)
 	}
 	Db = db
