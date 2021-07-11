@@ -17,7 +17,7 @@ func init() {
 		print("数据库连接失败")
 		panic(err)
 	}
-	if err := db.AutoMigrate(&model.Article{}, &model.Tag{}, &model.Category{}); err != nil {
+	if err := db.AutoMigrate(&model.Article{}, &model.Tag{}, &model.Category{}, &model.Setting{}); err != nil {
 		print("自动建表失败")
 		panic(err)
 	}
