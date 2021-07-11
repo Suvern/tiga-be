@@ -17,7 +17,22 @@ func InitialRouter(r *gin.Engine) {
 		article.GET("/category/:category", handler.GetArticleList)
 		article.GET("/detail/:id", handler.GetArticleDetail)
 		article.POST("/", handler.CreateArticle)
-		article.PUT("/", handler.UpdateArticle)
-		article.DELETE("/", handler.DeleteArticle)
+		article.PUT("/:id", handler.UpdateArticle)
+		article.DELETE("/:id", handler.DeleteArticle)
+	}
+
+	category := r.Group("category")
+	{
+		category.GET("/", handler.GetCategoryList)
+		category.POST("/", handler.CreateCategory)
+		category.PUT("/", handler.UpdateCategory)
+		category.DELETE("/", handler.DeleteCategory)
+	}
+
+	tag := r.Group("tag")
+	{
+		tag.GET("/", handler.GetTagList)
+		tag.POST("/", handler.CreateTag)
+		tag.DELETE("/", handler.DeleteTag)
 	}
 }
