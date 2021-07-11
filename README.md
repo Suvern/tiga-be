@@ -1,6 +1,6 @@
 > 瞎j8写
 
-## RUN
+## Run
 
 在根目录新建`config.json`，并写入
 
