@@ -35,4 +35,11 @@ func InitialRouter(r *gin.Engine) {
 		tag.POST("/", handler.CreateTag)
 		tag.DELETE("/", handler.DeleteTag)
 	}
+
+	admin := r.Group("admin")
+	{
+		admin.POST("/login", handler.AdminLogin)
+		admin.PUT("/update/password", handler.UpdatePassword)
+		admin.PUT("/update/preference", handler.UpdatePreference)
+	}
 }

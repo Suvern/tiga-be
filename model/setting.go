@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Setting struct {
 	gorm.Model
-	Username string `gorm:"unique"`
-	Password string
+	Username   string
+	Password   string
+	Preference string `gorm:"type:json"`
 }
