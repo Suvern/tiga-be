@@ -1,4 +1,4 @@
-package main
+package dao
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 var Db *gorm.DB
 
 func init() {
-	dbConfig := Config.GetStringMapString("db")
+	dbConfig := util.Config.GetStringMapString("db")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/tiga?charset=utf8mb4&parseTime=True&loc=Local", dbConfig["username"], dbConfig["password"], dbConfig["host"], dbConfig["port"])
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
