@@ -5,6 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"tiga/model"
+	"tiga/util"
 )
 
 var Db *gorm.DB
@@ -22,4 +23,26 @@ func init() {
 		panic(err)
 	}
 	Db = db
+	initSetting()
+}
+
+func initSetting() {
+	var setting model.Setting
+	Db.Limit(1).Find(&setting)
+	if setting.Username == "" {
+		username := "admin"
+		password := util.GenerateRandomPassword(24)
+		setting.Username = username
+		setting.Password = util.HashPassword(password)
+		setting.Preference = "{}"
+		result := Db.Save(&setting)
+		if result.Error != nil {
+			print("初始化密码失败")
+			panic(result.Error)
+		}
+		fmt.Println("----------------------------------------")
+		fmt.Printf("初始化账号：%s\n", username)
+		fmt.Printf("初始化密码： %s\n", password)
+		fmt.Println("----------------------------------------")
+	}
 }
