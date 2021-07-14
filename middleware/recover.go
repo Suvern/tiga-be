@@ -11,6 +11,7 @@ func Recover(c *gin.Context) {
 		if r := recover(); r != nil {
 			debug.PrintStack()
 			err := convertError(r)
+			print(err.Error())
 			c.JSON(err.Code, err.Msg)
 			c.Abort()
 		}

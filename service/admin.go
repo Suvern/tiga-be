@@ -2,17 +2,19 @@ package service
 
 import (
 	"tiga/db"
+	"tiga/model"
 	"tiga/model/dao"
+	"tiga/model/form"
 	"tiga/util"
 )
 
-func AdminLogin(username, password string) {
+func AdminLogin(form form.LoginForm) string {
 	var setting = dao.Setting{}
 	db.Db.Limit(1).Find(&setting)
-	if setting.Username == username && util.CheckPasswordHash(password, setting.Password) {
-		// 登录成功
+	if setting.Username == form.Username && util.CheckPasswordHash(form.Password, setting.Password) {
+		return util.GenerateToken(form.Username)
 	} else {
-		// 用户不存在或密码错误
+		panic(model.WrongPasswordError)
 	}
 }
 
