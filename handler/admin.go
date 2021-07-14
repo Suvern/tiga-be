@@ -8,8 +8,6 @@ import (
 )
 
 func AdminLogin(c *gin.Context) {
-	// username: admin
-	// password: PpVlXgzSO8oh06OABDDYVsGk
 	loginForm := form.LoginForm{}
 	if err := c.ShouldBindJSON(&loginForm); err != nil {
 		panic(model.UnexpectedParamsError)

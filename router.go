@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"tiga/handler"
+	"tiga/middleware"
 )
 
 func InitialRouter(r *gin.Engine) {
@@ -39,7 +40,11 @@ func InitialRouter(r *gin.Engine) {
 	admin := r.Group("admin")
 	{
 		admin.POST("/login", handler.AdminLogin)
-		admin.PUT("/update/password", handler.UpdatePassword)
-		admin.PUT("/update/preference", handler.UpdatePreference)
+		auth := admin.Group("")
+		{
+			auth.Use(middleware.AuthCookie)
+			auth.PUT("/update/password", handler.UpdatePassword)
+			auth.PUT("/update/preference", handler.UpdatePreference)
+		}
 	}
 }

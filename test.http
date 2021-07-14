@@ -1,0 +1,11 @@
+###
+POST localhost:8080/admin/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "PpVlXgzSO8oh06OABDDYVsGk"
+}
+
+###
+PUT localhost:8080/admin/update/preference
