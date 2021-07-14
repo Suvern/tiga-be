@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"tiga/model"
 	"tiga/model/form"
 	"tiga/service"
@@ -26,9 +27,19 @@ func AdminLogin(c *gin.Context) {
 }
 
 func UpdatePassword(c *gin.Context) {
-	c.JSON(200, "updatePassword")
+	updatePasswordForm := form.UpdatePasswordForm{}
+	if err := c.ShouldBindJSON(&updatePasswordForm); err != nil {
+		panic(model.UnexpectedParamsError)
+	}
+	service.UpdatePassword(updatePasswordForm)
+	c.JSON(201, "操作成功")
 }
 
 func UpdatePreference(c *gin.Context) {
-	c.JSON(200, "updatePreference")
+	body, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		panic(model.UnexpectedParamsError)
+	}
+	service.UpdatePreference(string(body))
+	c.JSON(201, "操作成功")
 }

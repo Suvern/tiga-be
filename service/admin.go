@@ -9,7 +9,7 @@ import (
 )
 
 func AdminLogin(form form.LoginForm) string {
-	var setting = dao.Setting{}
+	setting := dao.Setting{}
 	db.Db.Limit(1).Find(&setting)
 	if setting.Username == form.Username && util.CheckPasswordHash(form.Password, setting.Password) {
 		return util.GenerateToken(form.Username)
@@ -18,18 +18,22 @@ func AdminLogin(form form.LoginForm) string {
 	}
 }
 
-func UpdatePassword(password string) {
+func UpdatePassword(form form.UpdatePasswordForm) {
 	// TODO: 需要事务
-	var setting = dao.Setting{}
+	setting := dao.Setting{}
 	db.Db.Limit(1).Find(&setting)
-	setting.Password = util.HashPassword(password)
-	db.Db.Save(&setting)
+	if util.CheckPasswordHash(form.OldPassword, setting.Password) {
+		setting.Password = util.HashPassword(form.NewPassword)
+		db.Db.Save(&setting)
+	} else {
+		panic(model.WrongPasswordError)
+	}
 }
 
 func UpdatePreference(preference string) {
-	var setting = dao.Setting{}
-	db.Db.Limit(1).Find(&setting)
 	// TODO: 验证JSON格式
+	setting := dao.Setting{}
+	db.Db.Limit(1).Find(&setting)
 	setting.Preference = preference
 	db.Db.Save(&setting)
 }

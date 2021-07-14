@@ -50,3 +50,17 @@ func GenerateToken(username string) string {
 	}
 	return signedToken
 }
+
+func CheckToken(token string) (*JwtClaim, bool) {
+	jwtToken, err := jwt.ParseWithClaims(token, &JwtClaim{},
+		func(token *jwt.Token) (i interface{}, e error) {
+			secret := Config.GetString("jwt.secret")
+			return []byte(secret), nil
+		})
+	if err == nil && jwtToken != nil {
+		if claim, ok := jwtToken.Claims.(*JwtClaim); ok && jwtToken.Valid {
+			return claim, true
+		}
+	}
+	return nil, false
+}
