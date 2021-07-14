@@ -9,3 +9,19 @@ Content-Type: application/json
 
 ###
 PUT localhost:8080/admin/update/preference
+Content-Type: text/plain
+
+{
+    "author": "岛市老八",
+    "phone": "110"
+}
+
+###
+PUT localhost:8080/admin/update/preference
+Content-Type: application/json
+
+{
+  "oldPassword": "fuckyou!",
+  "newPassword": "PpVlXgzSO8oh06OABDDYVsGk!"
+}
+
