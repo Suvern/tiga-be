@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"strconv"
@@ -28,4 +29,23 @@ func GenerateRandomPassword(n int) string {
 		password[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(password)
+}
+
+type JwtClaim struct {
+	jwt.StandardClaims
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func GenerateToken(claim *JwtClaim) string {
+	secret := Config.GetString("jwt.secret")
+	claim.IssuedAt = time.Now().Unix()
+	claim.ExpiresAt = time.Now().Add(time.Second * time.Duration(100)).Unix()
+	token := jwt.NewWithClaims(jwt.SigningMethodES256, claim)
+	signedToken, err := token.SignedString([]byte(secret))
+	if err != nil {
+		print("生成jwt token失败")
+		panic(err)
+	}
+	return signedToken
 }

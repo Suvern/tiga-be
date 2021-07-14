@@ -1,4 +1,4 @@
-package model
+package dao
 
 type Category struct {
 	ID       uint      `gorm:"primaryKey"`

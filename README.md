@@ -11,6 +11,9 @@
     "port": "3306",
     "username": "user",
     "password": "password"
+  },
+  "jwt": {
+    "secret": "this is your jwt secret"
   }
 }
 ```

@@ -1,14 +1,14 @@
 package service
 
 import (
-	"tiga/dao"
-	"tiga/model"
+	"tiga/db"
+	"tiga/model/dao"
 	"tiga/util"
 )
 
 func AdminLogin(username, password string) {
-	var setting = model.Setting{}
-	dao.Db.Limit(1).Find(&setting)
+	var setting = dao.Setting{}
+	db.Db.Limit(1).Find(&setting)
 	if setting.Username == username && util.CheckPasswordHash(password, setting.Password) {
 		// 登录成功
 	} else {
@@ -18,16 +18,16 @@ func AdminLogin(username, password string) {
 
 func UpdatePassword(password string) {
 	// TODO: 需要事务
-	var setting = model.Setting{}
-	dao.Db.Limit(1).Find(&setting)
+	var setting = dao.Setting{}
+	db.Db.Limit(1).Find(&setting)
 	setting.Password = util.HashPassword(password)
-	dao.Db.Save(&setting)
+	db.Db.Save(&setting)
 }
 
 func UpdatePreference(preference string) {
-	var setting = model.Setting{}
-	dao.Db.Limit(1).Find(&setting)
+	var setting = dao.Setting{}
+	db.Db.Limit(1).Find(&setting)
 	// TODO: 验证JSON格式
 	setting.Preference = preference
-	dao.Db.Save(&setting)
+	db.Db.Save(&setting)
 }

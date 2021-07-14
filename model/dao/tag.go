@@ -1,4 +1,4 @@
-package model
+package dao
 
 type Tag struct {
 	ID       uint      `gorm:"primaryKey"`

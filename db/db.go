@@ -1,10 +1,10 @@
-package dao
+package db
 
 import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"tiga/model"
+	"tiga/model/dao"
 	"tiga/util"
 )
 
@@ -18,7 +18,7 @@ func init() {
 		print("数据库连接失败")
 		panic(err)
 	}
-	if err := db.AutoMigrate(&model.Article{}, &model.Tag{}, &model.Category{}, &model.Setting{}); err != nil {
+	if err := db.AutoMigrate(&dao.Article{}, &dao.Tag{}, &dao.Category{}, &dao.Setting{}); err != nil {
 		print("自动建表失败")
 		panic(err)
 	}
@@ -27,7 +27,7 @@ func init() {
 }
 
 func initSetting() {
-	var setting model.Setting
+	var setting dao.Setting
 	Db.Limit(1).Find(&setting)
 	if setting.Username == "" {
 		username := "admin"
