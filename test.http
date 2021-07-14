@@ -25,3 +25,12 @@ Content-Type: application/json
   "newPassword": "PpVlXgzSO8oh06OABDDYVsGk!"
 }
 
+
+###
+POST localhost:8080/article
+Content-Type: application/json
+
+{
+  "title": "老八秘制小汉堡",
+  "content": "既实惠，还管饱"
+}
