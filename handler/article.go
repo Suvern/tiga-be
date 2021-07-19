@@ -12,33 +12,43 @@ func GetArticleList(c *gin.Context) {
 }
 
 func GetArticleDetail(c *gin.Context) {
-	c.JSON(200, "getArticle")
+	articleUriForm := form.ArticleUriForm{}
+	if err := c.ShouldBindUri(&articleUriForm); err != nil {
+		panic(model.UnexpectedParamsError)
+	}
+	article := service.GetArticleDetail(articleUriForm.ID)
+	c.JSON(200, article)
 }
 
 func CreateArticle(c *gin.Context) {
-	articleForm := form.ArticleForm{}
-	if err := c.ShouldBindJSON(&articleForm); err != nil {
+	articleJsonForm := form.ArticleJsonForm{}
+	if err := c.ShouldBindJSON(&articleJsonForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
-	service.CreateArticle(articleForm)
+	service.CreateArticle(articleJsonForm)
 	c.JSON(201, "操作成功")
 }
 
 func UpdateArticle(c *gin.Context) {
-	articleForm := form.ArticleForm{}
-	if err := c.ShouldBindJSON(&articleForm); err != nil {
+	articleJsonForm := form.ArticleJsonForm{}
+	if err := c.ShouldBindJSON(&articleJsonForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
 
-	updateArticleForm := form.UpdateArticleForm{}
-	if err := c.ShouldBindUri(&updateArticleForm); err != nil {
+	articleUriForm := form.ArticleUriForm{}
+	if err := c.ShouldBindUri(&articleUriForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
 
-	service.UpdateArticle(updateArticleForm.ID, articleForm)
+	service.UpdateArticle(articleUriForm.ID, articleJsonForm)
 	c.JSON(201, "操作成功")
 }
 
 func DeleteArticle(c *gin.Context) {
-	c.JSON(200, "deleteArticle")
+	articleUriForm := form.ArticleUriForm{}
+	if err := c.ShouldBindUri(&articleUriForm); err != nil {
+		panic(model.UnexpectedParamsError)
+	}
+	service.DeleteArticle(articleUriForm.ID)
+	c.JSON(201, "操作成功")
 }

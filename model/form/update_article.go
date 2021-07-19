@@ -1,5 +1,5 @@
 package form
 
-type UpdateArticleForm struct {
+type ArticleUriForm struct {
 	ID uint `uri:"id" binding:"required"`
 }

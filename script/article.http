@@ -1,4 +1,7 @@
-###
+### 查询文章内容
+GET localhost:8080/article/2
+
+### 增加文章
 POST localhost:8080/article
 Content-Type: application/json
 
@@ -7,7 +10,7 @@ Content-Type: application/json
   "content": "既实惠，还管饱"
 }
 
-###
+### 修改文章
 PUT localhost:8080/article/2
 Content-Type: application/json
 
@@ -16,4 +19,7 @@ Content-Type: application/json
   "content": "既实惠，还管饱"
 }
 
+### 删除文章
+DELETE localhost:8080/article/3
+Content-Type: application/json
 
