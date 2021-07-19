@@ -8,6 +8,10 @@ import (
 )
 
 func GetArticleList(c *gin.Context) {
+	articleQueryForm := form.ArticleQueryForm{}
+	if err := c.ShouldBindQuery(&articleQueryForm); err != nil {
+		panic(model.UnexpectedParamsError)
+	}
 	c.JSON(200, "getArticleList")
 }
 

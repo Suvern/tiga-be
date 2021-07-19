@@ -10,15 +10,33 @@ import (
 	"tiga/model/form"
 )
 
-func GetArticleList() {
+type ArticleVO struct {
+	Title        string
+	Tags         []dao.Tag `gorm:"many2many:article_tag"`
+	CategoryType string
+	CategoryID   uint
+}
 
+const PageSize = 15
+
+func GetArticleList(form form.ArticleQueryForm) []ArticleVO {
+	var articles []ArticleVO
+	result := db.Db.Model(&dao.Article{})
+	if form.TagName != nil {
+		result = result.Joins("Tags").Joins("tag.name = ?", form.TagName)
+	}
+	if form.CategoryName != nil {
+		result = result.Joins("Category").Joins("category.name = ?", form.TagName)
+	}
+	result.Limit(PageSize).Offset(form.Page * PageSize).Find(&articles)
+	return articles
 }
 
 func GetArticleDetail(id uint) dao.Article {
 	if !isArticleExist(id) {
 		panic(model.HttpError{Code: http.StatusNotFound, Msg: "文章不存在或已删除"})
 	}
-	article := dao.Article{}
+	var article dao.Article
 	db.Db.Where(id).Find(&article)
 	return article
 }
@@ -36,7 +54,7 @@ func UpdateArticle(id uint, form form.ArticleJsonForm) {
 	if !isArticleExist(id) {
 		panic(model.HttpError{Code: http.StatusNotFound, Msg: "文章不存在或已删除"})
 	}
-	article := dao.Article{}
+	var article dao.Article
 	db.Db.Where(id).Find(&article)
 	article.Title = form.Title
 	article.Content = form.Content
@@ -52,7 +70,7 @@ func DeleteArticle(id uint) {
 }
 
 func isArticleExist(id uint) bool {
-	article := dao.Article{}
+	var article dao.Article
 	result := db.Db.Where(id).Find(&article)
 	return !errors.Is(result.Error, gorm.ErrRecordNotFound)
 }
@@ -64,7 +82,7 @@ func setTagAndCategoryWithForm(article *dao.Article, form form.ArticleJsonForm) 
 		article.Tags = tags
 	}
 	if len(form.CategoryName) > 0 {
-		category := dao.Category{}
+		var category dao.Category
 		db.Db.Model(&dao.Category{}).Where("name = ?", form.CategoryName).Find(&category)
 		article.CategoryID = category.ID
 	}
