@@ -1,6 +1,6 @@
 package form
 
-type CreateArticleForm struct {
+type ArticleForm struct {
 	Title        string   `json:"title"`
 	Content      string   `json:"content"`
 	TagName      []string `json:"tagName"`

@@ -1,0 +1,19 @@
+###
+POST localhost:8080/article
+Content-Type: application/json
+
+{
+  "title": "老八秘制小汉堡",
+  "content": "既实惠，还管饱"
+}
+
+###
+PUT localhost:8080/article/2
+Content-Type: application/json
+
+{
+  "title": "不吃好的，不吃贵的",
+  "content": "既实惠，还管饱"
+}
+
+

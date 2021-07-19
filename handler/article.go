@@ -16,16 +16,27 @@ func GetArticleDetail(c *gin.Context) {
 }
 
 func CreateArticle(c *gin.Context) {
-	createArticleForm := form.CreateArticleForm{}
-	if err := c.ShouldBindJSON(&createArticleForm); err != nil {
+	articleForm := form.ArticleForm{}
+	if err := c.ShouldBindJSON(&articleForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
-	service.CreateArticle(createArticleForm)
+	service.CreateArticle(articleForm)
 	c.JSON(201, "操作成功")
 }
 
 func UpdateArticle(c *gin.Context) {
-	c.JSON(200, "updateArticle")
+	articleForm := form.ArticleForm{}
+	if err := c.ShouldBindJSON(&articleForm); err != nil {
+		panic(model.UnexpectedParamsError)
+	}
+
+	updateArticleForm := form.UpdateArticleForm{}
+	if err := c.ShouldBindUri(&updateArticleForm); err != nil {
+		panic(model.UnexpectedParamsError)
+	}
+
+	service.UpdateArticle(updateArticleForm.ID, articleForm)
+	c.JSON(201, "操作成功")
 }
 
 func DeleteArticle(c *gin.Context) {
