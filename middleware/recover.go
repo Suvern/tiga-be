@@ -10,8 +10,8 @@ func Recover(c *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			debug.PrintStack()
+			print(r)
 			err := convertError(r)
-			print(err.Error())
 			c.JSON(err.Code, err.Msg)
 			c.Abort()
 		}

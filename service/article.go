@@ -22,11 +22,11 @@ const PageSize = 15
 func GetArticleList(form form.ArticleQueryForm) []ArticleVO {
 	var articles []ArticleVO
 	result := db.Db.Model(&dao.Article{})
-	if form.TagName != nil {
-		result = result.Joins("Tags").Joins("tag.name = ?", form.TagName)
+	if form.TagID != nil {
+		result = result.Joins("Tags").Joins("tag.name = ?", form.TagID)
 	}
-	if form.CategoryName != nil {
-		result = result.Joins("Category").Joins("category.name = ?", form.TagName)
+	if form.CategoryID != nil {
+		result = result.Joins("Category").Joins("category.name = ?", form.TagID)
 	}
 	result.Limit(PageSize).Offset(form.Page * PageSize).Find(&articles)
 	return articles
@@ -76,14 +76,14 @@ func isArticleExist(id uint) bool {
 }
 
 func setTagAndCategoryWithForm(article *dao.Article, form form.ArticleJsonForm) {
-	if len(form.TagName) > 0 && len(form.TagName[0]) > 0 {
+	if len(form.TagID) > 0 && len(form.TagID[0]) > 0 {
 		var tags []dao.Tag
-		db.Db.Model(&dao.Tag{}).Where("name IN ?", form.TagName).Find(&tags)
+		db.Db.Model(&dao.Tag{}).Where("name IN ?", form.TagID).Find(&tags)
 		article.Tags = tags
 	}
-	if len(form.CategoryName) > 0 {
+	if len(form.CategoryID) > 0 {
 		var category dao.Category
-		db.Db.Model(&dao.Category{}).Where("name = ?", form.CategoryName).Find(&category)
+		db.Db.Model(&dao.Category{}).Where("name = ?", form.CategoryID).Find(&category)
 		article.CategoryID = category.ID
 	}
 }

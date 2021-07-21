@@ -7,16 +7,17 @@ import (
 	"tiga/service"
 )
 
-func GetArticleList(c *gin.Context) {
+func GetArticleListAll(c *gin.Context) {
 	articleQueryForm := form.ArticleQueryForm{}
 	if err := c.ShouldBindQuery(&articleQueryForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
-	c.JSON(200, "getArticleList")
+	articles := service.GetArticleList(articleQueryForm)
+	c.JSON(200, articles)
 }
 
 func GetArticleDetail(c *gin.Context) {
-	articleUriForm := form.ArticleUriForm{}
+	articleUriForm := form.ArticleIDForm{}
 	if err := c.ShouldBindUri(&articleUriForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
@@ -39,17 +40,17 @@ func UpdateArticle(c *gin.Context) {
 		panic(model.UnexpectedParamsError)
 	}
 
-	articleUriForm := form.ArticleUriForm{}
-	if err := c.ShouldBindUri(&articleUriForm); err != nil {
+	articleIDForm := form.ArticleIDForm{}
+	if err := c.ShouldBindUri(&articleIDForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}
 
-	service.UpdateArticle(articleUriForm.ID, articleJsonForm)
+	service.UpdateArticle(articleIDForm.ID, articleJsonForm)
 	c.JSON(201, "操作成功")
 }
 
 func DeleteArticle(c *gin.Context) {
-	articleUriForm := form.ArticleUriForm{}
+	articleUriForm := form.ArticleIDForm{}
 	if err := c.ShouldBindUri(&articleUriForm); err != nil {
 		panic(model.UnexpectedParamsError)
 	}

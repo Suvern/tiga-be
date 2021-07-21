@@ -13,9 +13,7 @@ func InitialRouter(r *gin.Engine) {
 
 	article := r.Group("article")
 	{
-		article.GET("/", handler.GetArticleList)
-		article.GET("/tag/:tag", handler.GetArticleList)
-		article.GET("/category/:category", handler.GetArticleList)
+		article.GET("/", handler.GetArticleListAll)
 		article.GET("/:id", handler.GetArticleDetail)
 		auth := article.Group("")
 		{
@@ -44,7 +42,6 @@ func InitialRouter(r *gin.Engine) {
 		auth := tag.Group("")
 		{
 			auth.Use(middleware.AuthCookie)
-			auth.POST("/", handler.CreateTag)
 			auth.DELETE("/", handler.DeleteTag)
 		}
 	}
